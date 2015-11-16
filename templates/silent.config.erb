@@ -1,0 +1,74 @@
+# This file managed by Puppet
+# Template Path: <%= @module_name %>/templates/silent.config.erb
+LICENSE_FILE=<%= @license_location %>
+MP_POD=<%= @pod %>
+REGION=<%= @datacenter %>
+HOSTIP=<%= @ipaddress %>
+<% if @bind_on_all_interfaces == true -%>
+BIND_ON_ALL_INTERFACES=y
+<% else -%>
+BIND_ON_ALL_INTERFACES=n
+<% end -%>
+MSIP=<%= @management_ip %>
+ADMIN_EMAIL=<%= @admin_email %>
+APIGEE_ADMINPW=<%= @admin_password %>
+APIGEE_LDAPPW=<%= @ldap_password %>
+<% if @ldap_use_remote_host == true -%>
+USE_LDAP_REMOTE_HOST=y
+LDAP_HOST=<%= @ldap_ip %>
+LDAP_PORT=<%= @ldap_port %>
+<% else -%>
+USE_LDAP_REMOTE_HOST=n
+<% end -%>
+LDAP_TYPE=<%= @ldap_type %>
+<% if @ldap_peer -%>
+LDAP_PEER=<%= @ldap_peer %>
+  <%- if @ldap_sid -%>
+LDAP_SID=<%= @ldap_sid %>
+  <%- end -%>
+<% end -%>
+<% if @use_smtp == true -%>
+SKIP_SMTP=n
+SMTPHOST=<%= @smtp_ip %>
+SMTPPORT=<%= @smtp_port %>
+<%# SMTPUSER=smtp@example.com (0 for no username) -%>
+SMTPUSER=<%= @smtp_user %>
+<%# SMTPPASSWORD=smtppwd (0 for no password) -%>
+SMTPPASSWORD=<%= @smtp_password %>
+  <%- if @use_smtp_ssl == true -%>
+SMTPSSL=y
+  <%- else -%>
+SMTPSSL=n
+  <%- end -%>
+<% else -%>
+SKIP_SMTP=y
+<% end -%>
+<% if @use_zookeeper_cluster == true -%>
+USE_ZK_CLUSTER=y
+<% else -%>
+USE_ZK_CLUSTER=n
+<% end -%>
+<%# a more complex example of zookeeper cluster which, likely, spans -%>
+<%# datacenters and needs an odd number of voting members -%>
+<%# ZK_HOSTS="$IP1 $IP2 $IP4 $IP5:observer $IP6:observer" -%>
+<%# the most basic and minimal zookeeper host list -%>
+<%# ZK_HOSTS="$IP1 $IP2 $IP3" -%>
+ZK_HOSTS="<%= @zookeeper_ips %>"
+ZK_CLIENT_HOSTS="<%= @zookeeper_client_ips %>"
+<% if @use_cassandra_cluster == true -%>
+USE_CASS_CLUSTER=y
+<% else -%>
+USE_CASS_CLUSTER=n
+<% end -%>
+<%# To overcome firewall issues, CASS_HOSTS have to be ordered in a manner (as shown -%>
+<%# below) such that the nodes of the current datacenter are placed at the beginning. -%>
+<%# CASS_HOSTS="$IP4:2,1 $IP5:2,1 $IP6:2,1 $IP1:1,1 $IP2:1,1 $IP3:1,1" -%>
+<%# CASS_HOSTS="$IP1:1,1 $IP2:1,1 $IP3:1,1 $IP4:2,1 $IP5:2,1 $IP6:2,1" -%>
+<%# the most basic and minimal cassandra list -%>
+<%# CASS_HOSTS="$IP1 $IP2 $IP3" -%>
+CASS_HOSTS="<%= @cassandra_ips %>"
+<% if @enable_analytics -%>
+ENABLE_AX=y
+<% else -%>
+ENABLE_AX=n
+<% end -%>
